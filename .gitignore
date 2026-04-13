@@ -1,0 +1,45 @@
+# Data cache — never commit raw FRED data
+data/cache/
+data/cache/**
+
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Type checking / linting caches
+.mypy_cache/
+.ruff_cache/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Model weights (too large for git)
+*.bin
+*.safetensors
+models/weights/
+VOICE.md
+CLAUDE.md
+lessons.md
+PRD_conformal_econ_forecast.md

@@ -1,0 +1,36 @@
+name: Weekly data refresh
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # Every Monday 6am UTC
+  workflow_dispatch:       # Allow manual trigger
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Refresh FRED data
+        run: python -m conformal_econ.data.fred --refresh
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+      - name: Run benchmark
+        run: python -m conformal_econ.benchmark.runner --output results/benchmark_results.parquet
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+      - name: Commit updated results
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: weekly data and benchmark refresh"
+          file_pattern: "results/*.parquet"
