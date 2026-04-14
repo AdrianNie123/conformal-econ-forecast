@@ -180,6 +180,7 @@ class XGBoostModel(ForecastModel):
             subsample=0.8,
             random_state=42,
             verbosity=0,
+            nthread=1,  # Prevents OpenMP segfaults when fit() is called in a loop on macOS
         )
         self._y_train: np.ndarray | None = None
 

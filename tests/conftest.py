@@ -7,7 +7,12 @@ as a session-scoped fixture so they exist before test_data.py runs.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
+
+# XGBoost's OpenMP thread pool causes segfaults on macOS when fit() is called
+# in a tight loop (e.g., ConformalWrapper calibration). Single-threading fixes it.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
 
 import numpy as np
 import pandas as pd
